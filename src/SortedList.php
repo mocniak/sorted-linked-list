@@ -15,7 +15,23 @@ class SortedList
 
             return;
         }
-        $this->firstNode->changeNext(new ListNode($valueToAdd, null));
+        $previousNode = null;
+        $nextNode = $this->firstNode;
+        while ($nextNode !== null) {
+            if ($valueToAdd < $nextNode->value) {
+                if ($previousNode === null) {
+                    $this->firstNode = new ListNode($valueToAdd, $nextNode);
+
+                    return;
+                }
+                $previousNode->changeNext(new ListNode($valueToAdd, $nextNode));
+
+                return;
+            }
+            $previousNode = $nextNode;
+            $nextNode = $nextNode->getNext();
+        }
+        $previousNode->changeNext(new ListNode($valueToAdd, null));
     }
 
     /**
