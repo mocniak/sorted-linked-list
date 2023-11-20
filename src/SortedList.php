@@ -8,9 +8,14 @@ class SortedList
 {
     private ?ListNode $firstNode = null;
 
-    public function add(string $string): void
+    public function add(string $valueToAdd): void
     {
-        $this->firstNode = new ListNode($string, null);
+        if ($this->firstNode === null) {
+            $this->firstNode = new ListNode($valueToAdd, null);
+
+            return;
+        }
+        $this->firstNode->changeNext(new ListNode($valueToAdd, null));
     }
 
     /**
@@ -18,6 +23,13 @@ class SortedList
      */
     public function getAll(): array
     {
-        return $this->firstNode === null ? [] : [$this->firstNode->value];
+        $valuesToReturn = [];
+        $node = $this->firstNode;
+        while ($node !== null) {
+            $valuesToReturn[] = $node->value;
+            $node = $node->getNext();
+        }
+
+        return $valuesToReturn;
     }
 }

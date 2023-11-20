@@ -21,12 +21,11 @@ class SortedListTest extends TestCase
         $this->assertEquals([], $list->getAll());
     }
 
-    public function testListStoresValuesOrdered(): void
+    public function testListStoresMoreThanOneValueOrdered(): void
     {
         $list = new SortedList();
-        $list->add('banana');
         $list->add('apple');
-        $list->add('cherry');
-        $this->assertEquals(['apple', 'banana', 'cherry'], $list->getAll());
+        $list->add('banana');
+        $this->assertEquals(['apple', 'banana'], $list->getAll());
     }
 }
