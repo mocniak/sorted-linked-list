@@ -6,21 +6,18 @@ namespace Mocniak\SortedLinkedList;
 
 class SortedList
 {
-    /**
-     * @var mixed[]
-     */
-    private array $values = [];
+    private ?ListNode $firstNode = null;
 
     public function add(string $string): void
     {
-        $this->values[] = $string;
+        $this->firstNode = new ListNode($string, null);
     }
 
     /**
-     * @return mixed[]
+     * @return string[]
      */
     public function getAll(): array
     {
-        return $this->values;
+        return $this->firstNode === null ? [] : [$this->firstNode->value];
     }
 }

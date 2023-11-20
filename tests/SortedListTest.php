@@ -14,4 +14,19 @@ class SortedListTest extends TestCase
         $list->add('some-value');
         $this->assertEquals(['some-value'], $list->getAll());
     }
+
+    public function testEmptyListReturnsEmptyArray(): void
+    {
+        $list = new SortedList();
+        $this->assertEquals([], $list->getAll());
+    }
+
+    public function testListStoresValuesOrdered(): void
+    {
+        $list = new SortedList();
+        $list->add('banana');
+        $list->add('apple');
+        $list->add('cherry');
+        $this->assertEquals(['apple', 'banana', 'cherry'], $list->getAll());
+    }
 }
