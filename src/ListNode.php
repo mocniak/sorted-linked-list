@@ -20,7 +20,7 @@ class ListNode
         return $this->next;
     }
 
-    public function changeNext(ListNode $newNext): void
+    public function changeNext(?ListNode $newNext): void
     {
         $this->next = $newNext;
     }

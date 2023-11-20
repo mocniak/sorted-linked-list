@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Mocniak\Test\SortedLinkedList;
 
+use Mocniak\SortedLinkedList\RemovingElementNotPresentOnTheListException;
 use Mocniak\SortedLinkedList\SortedList;
+use Ramsey\Dev\Tools\TestCase as BaseTestCase;
 
-class SortedListTest extends TestCase
+class SortedListTest extends BaseTestCase
 {
     public function testListStoresANumericValue(): void
     {
@@ -49,7 +51,7 @@ class SortedListTest extends TestCase
         $this->assertEquals(['apple', 'banana', 'cherry', 'dragon fruit', 'eggplant', 'fig'], $list->getAll());
     }
 
-    public function testListIsIterable()
+    public function testListIsIterable(): void
     {
         $list = new SortedList();
         $list->add('apple');
@@ -59,5 +61,54 @@ class SortedListTest extends TestCase
             $elements[] = $element;
         }
         $this->assertEquals(['apple', 'banana'], $elements);
+    }
+
+    public function testItemsCanBeDeletedFromTheList(): void
+    {
+        $list = new SortedList();
+        $list->add('apple');
+        $list->add('banana');
+        $list->add('cherry');
+        $list->add('dragon fruit');
+        $list->remove('dragon fruit');
+        $this->assertEquals(['apple', 'banana', 'cherry'], $list->getAll());
+        $list->remove('banana');
+        $this->assertEquals(['apple', 'cherry'], $list->getAll());
+        $list->remove('apple');
+        $this->assertEquals(['cherry'], $list->getAll());
+        $list->remove('cherry');
+        $this->assertEquals([], $list->getAll());
+    }
+
+    public function testRemovingItemFromEmptyListThrowsAnException(): void
+    {
+        $list = new SortedList();
+        $this->expectException(RemovingElementNotPresentOnTheListException::class);
+        $list->remove('banana');
+    }
+
+    public function testListIsCountable(): void
+    {
+        $list = new SortedList();
+        $this->assertEquals(0, $list->count());
+        $list->add('apple');
+        $this->assertEquals(1, $list->count());
+        $list->add('banana');
+        $this->assertEquals(2, $list->count());
+        $list->remove('banana');
+        $this->assertEquals(1, $list->count());
+        $list->clear();
+        $this->assertEquals(0, $list->count());
+    }
+
+    public function testClearingListMakesItEmpty(): void
+    {
+        $list = new SortedList();
+        $list->add('apple');
+        $list->add('banana');
+        $list->add('cherry');
+        $list->clear();
+        $this->assertEquals([], $list->getAll());
+        $this->assertEquals(0, $list->count());
     }
 }
