@@ -48,4 +48,16 @@ class SortedListTest extends TestCase
         $list->add('apple');
         $this->assertEquals(['apple', 'banana', 'cherry', 'dragon fruit', 'eggplant', 'fig'], $list->getAll());
     }
+
+    public function testListIsIterable()
+    {
+        $list = new SortedList();
+        $list->add('apple');
+        $list->add('banana');
+        $elements = [];
+        foreach ($list as $element) {
+            $elements[] = $element;
+        }
+        $this->assertEquals(['apple', 'banana'], $elements);
+    }
 }

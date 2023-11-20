@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Mocniak\SortedLinkedList;
 
-class SortedList
+use Iterator;
+use IteratorAggregate;
+use Traversable;
+
+class SortedList implements IteratorAggregate
 {
     private ?ListNode $firstNode = null;
 
@@ -47,5 +51,44 @@ class SortedList
         }
 
         return $valuesToReturn;
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new class ($this->firstNode) implements Iterator {
+            private ?ListNode $firstNode;
+            private ?ListNode $currentNode;
+
+            public function __construct(?ListNode $firstNode)
+            {
+                $this->firstNode = $firstNode;
+                $this->currentNode = $firstNode;
+            }
+
+            public function current(): mixed
+            {
+                return $this->currentNode->value;
+            }
+
+            public function next(): void
+            {
+                $this->currentNode = $this->currentNode->getNext();
+            }
+
+            public function key(): mixed
+            {
+                return null;
+            }
+
+            public function valid(): bool
+            {
+                return $this->currentNode !== null;
+            }
+
+            public function rewind(): void
+            {
+                $this->currentNode = $this->firstNode;
+            }
+        };
     }
 }
