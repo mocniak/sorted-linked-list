@@ -11,7 +11,7 @@ use Ramsey\Dev\Tools\TestCase as BaseTestCase;
 
 class SortedListTest extends BaseTestCase
 {
-    public function testListStoresANumericValue(): void
+    public function testListStoresAValue(): void
     {
         $list = SortedLinkedList::ofStrings();
         $list->add('some-value');
