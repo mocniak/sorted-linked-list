@@ -9,7 +9,7 @@ use Iterator;
 use IteratorAggregate;
 use Traversable;
 
-class SortedList implements Countable, IteratorAggregate
+class SortedLinkedList implements Countable, IteratorAggregate
 {
     private ?ListNode $firstNode = null;
     private int $count = 0;

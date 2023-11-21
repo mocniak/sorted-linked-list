@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace Mocniak\Test\SortedLinkedList;
 
 use Mocniak\SortedLinkedList\RemovingElementNotPresentOnTheListException;
-use Mocniak\SortedLinkedList\SortedList;
+use Mocniak\SortedLinkedList\SortedLinkedList;
 use Ramsey\Dev\Tools\TestCase as BaseTestCase;
 
 class SortedListTest extends BaseTestCase
 {
     public function testListStoresANumericValue(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('some-value');
         $this->assertEquals(['some-value'], $list->getAll());
     }
 
     public function testEmptyListReturnsEmptyArray(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $this->assertEquals([], $list->getAll());
     }
 
     public function testListStoresTwoValues(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('apple');
         $list->add('banana');
         $this->assertEquals(['apple', 'banana'], $list->getAll());
@@ -33,7 +33,7 @@ class SortedListTest extends BaseTestCase
 
     public function testListStoresTwoValuesOrdered(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('banana');
         $list->add('apple');
         $this->assertEquals(['apple', 'banana'], $list->getAll());
@@ -41,7 +41,7 @@ class SortedListTest extends BaseTestCase
 
     public function testListStoresMoreThanOneValueOrdered(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('fig');
         $list->add('banana');
         $list->add('eggplant');
@@ -53,7 +53,7 @@ class SortedListTest extends BaseTestCase
 
     public function testListIsIterable(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('apple');
         $list->add('banana');
         $elements = [];
@@ -65,7 +65,7 @@ class SortedListTest extends BaseTestCase
 
     public function testItemsCanBeDeletedFromTheList(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('apple');
         $list->add('banana');
         $list->add('cherry');
@@ -82,14 +82,14 @@ class SortedListTest extends BaseTestCase
 
     public function testRemovingItemFromEmptyListThrowsAnException(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $this->expectException(RemovingElementNotPresentOnTheListException::class);
         $list->remove('banana');
     }
 
     public function testListIsCountable(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $this->assertEquals(0, $list->count());
         $list->add('apple');
         $this->assertEquals(1, $list->count());
@@ -103,7 +103,7 @@ class SortedListTest extends BaseTestCase
 
     public function testClearingListMakesItEmpty(): void
     {
-        $list = new SortedList();
+        $list = new SortedLinkedList();
         $list->add('apple');
         $list->add('banana');
         $list->add('cherry');
