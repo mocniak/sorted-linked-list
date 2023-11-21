@@ -9,13 +9,41 @@ use Iterator;
 use IteratorAggregate;
 use Traversable;
 
+use function is_int;
+use function is_string;
+
 class SortedLinkedList implements Countable, IteratorAggregate
 {
     private ?ListNode $firstNode = null;
     private int $count = 0;
+    private bool $storesIntegersOnly;
 
-    public function add(string $valueToAdd): void
+    public static function ofIntegers(): self
     {
+        return new self(true);
+    }
+
+    public static function ofStrings(): self
+    {
+        return new self(false);
+    }
+
+    private function __construct(bool $storesIntegersOnly)
+    {
+        $this->storesIntegersOnly = $storesIntegersOnly;
+    }
+
+    /**
+     * @throws AddingValueOfWrongTypeException
+     */
+    public function add(string | int $valueToAdd): void
+    {
+        if ($this->storesIntegersOnly && is_string($valueToAdd)) {
+            throw new AddingValueOfWrongTypeException('Adding string value to integer only list.');
+        }
+        if (!$this->storesIntegersOnly && is_int($valueToAdd)) {
+            throw new AddingValueOfWrongTypeException('Adding integer value to string only list.');
+        }
         $this->count++;
         if ($this->firstNode === null) {
             $this->firstNode = new ListNode($valueToAdd, null);
@@ -42,7 +70,7 @@ class SortedLinkedList implements Countable, IteratorAggregate
     }
 
     /**
-     * @return string[]
+     * @return string[]|int[]
      */
     public function getAll(): array
     {

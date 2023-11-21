@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mocniak\Test\SortedLinkedList;
 
+use Mocniak\SortedLinkedList\AddingValueOfWrongTypeException;
 use Mocniak\SortedLinkedList\RemovingElementNotPresentOnTheListException;
 use Mocniak\SortedLinkedList\SortedLinkedList;
 use Ramsey\Dev\Tools\TestCase as BaseTestCase;
@@ -12,20 +13,20 @@ class SortedListTest extends BaseTestCase
 {
     public function testListStoresANumericValue(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('some-value');
         $this->assertEquals(['some-value'], $list->getAll());
     }
 
     public function testEmptyListReturnsEmptyArray(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $this->assertEquals([], $list->getAll());
     }
 
     public function testListStoresTwoValues(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('apple');
         $list->add('banana');
         $this->assertEquals(['apple', 'banana'], $list->getAll());
@@ -33,7 +34,7 @@ class SortedListTest extends BaseTestCase
 
     public function testListStoresTwoValuesOrdered(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('banana');
         $list->add('apple');
         $this->assertEquals(['apple', 'banana'], $list->getAll());
@@ -41,7 +42,7 @@ class SortedListTest extends BaseTestCase
 
     public function testListStoresMoreThanOneValueOrdered(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('fig');
         $list->add('banana');
         $list->add('eggplant');
@@ -53,7 +54,7 @@ class SortedListTest extends BaseTestCase
 
     public function testListIsIterable(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('apple');
         $list->add('banana');
         $elements = [];
@@ -65,7 +66,7 @@ class SortedListTest extends BaseTestCase
 
     public function testItemsCanBeDeletedFromTheList(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('apple');
         $list->add('banana');
         $list->add('cherry');
@@ -82,14 +83,14 @@ class SortedListTest extends BaseTestCase
 
     public function testRemovingItemFromEmptyListThrowsAnException(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $this->expectException(RemovingElementNotPresentOnTheListException::class);
         $list->remove('banana');
     }
 
     public function testListIsCountable(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $this->assertEquals(0, $list->count());
         $list->add('apple');
         $this->assertEquals(1, $list->count());
@@ -103,12 +104,31 @@ class SortedListTest extends BaseTestCase
 
     public function testClearingListMakesItEmpty(): void
     {
-        $list = new SortedLinkedList();
+        $list = SortedLinkedList::ofStrings();
         $list->add('apple');
         $list->add('banana');
         $list->add('cherry');
         $list->clear();
         $this->assertEquals([], $list->getAll());
         $this->assertEquals(0, $list->count());
+    }
+
+    public function testListInIntegerModeCanStoreIntegerValuesOnly(): void
+    {
+        $list = SortedLinkedList::ofIntegers();
+        $list->add(2);
+        $list->add(1);
+        $this->assertEquals([1, 2], $list->getAll());
+        $this->expectException(AddingValueOfWrongTypeException::class);
+        $list->add('banana');
+    }
+
+    public function testListInStringModeCanStoreStringValuesOnly(): void
+    {
+        $list = SortedLinkedList::ofStrings();
+        $list->add('banana');
+        $this->assertEquals(['banana'], $list->getAll());
+        $this->expectException(AddingValueOfWrongTypeException::class);
+        $list->add(1);
     }
 }

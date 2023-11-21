@@ -6,10 +6,10 @@ namespace Mocniak\SortedLinkedList;
 
 class ListNode
 {
-    public readonly string $value;
+    public readonly string | int $value;
     private ?ListNode $next;
 
-    public function __construct(string $value, ?ListNode $next)
+    public function __construct(string | int $value, ?ListNode $next)
     {
         $this->value = $value;
         $this->next = $next;
